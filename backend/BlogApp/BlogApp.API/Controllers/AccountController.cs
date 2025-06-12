@@ -7,6 +7,8 @@ using System.Text;
 
 namespace BlogApp.API.Controllers
 {
+    // Controller for user account management, including registration and login
+    // Provides endpoints which handle user registration and login and generate JWT tokens for authenticated users
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -22,6 +24,7 @@ namespace BlogApp.API.Controllers
             _configuration = configuration;
         }
 
+        // Endpoint for registering a new user
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDto registrationDto)
         {
@@ -43,6 +46,7 @@ namespace BlogApp.API.Controllers
             return Ok("User registered successfully.");
         }
 
+        // Endpoint for user login and authentication via JWT tokens
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {

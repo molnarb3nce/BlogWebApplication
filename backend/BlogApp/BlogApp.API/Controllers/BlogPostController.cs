@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.API.Controllers
 {
+    // This controller handles CRUD operations for blog posts
+    // Provides endpoints to create, read, update, and delete blog posts
     [ApiController]
     [Route("api/[controller]")]
     public class BlogPostController : ControllerBase
@@ -16,7 +18,7 @@ namespace BlogApp.API.Controllers
             _repository = repository;
         }
 
-        // GET /api/posts - Retrieve all posts
+        // Retrievee all posts
         [HttpGet]
         public async Task<IActionResult> GetAllPosts()
         {
@@ -24,7 +26,7 @@ namespace BlogApp.API.Controllers
             return Ok(posts);
         }
 
-        // GET /api/posts/{id} - Retrieve a specific post by ID
+        // Retrieves a specific post by ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPostById(int id)
         {
@@ -36,7 +38,7 @@ namespace BlogApp.API.Controllers
             return Ok(post);
         }
 
-        // POST /api/posts - Create a new post
+        // Creates a new post
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreatePost([FromBody] CreateBlogPostDto createBlogPostDto)
@@ -58,7 +60,7 @@ namespace BlogApp.API.Controllers
             return CreatedAtAction(nameof(GetPostById), new { id = blogPost.Id }, blogPost);
         }
 
-        // PUT /api/posts/{id} - Update a post
+        // Updates a post
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdatePost(int id, [FromBody] BlogPost blogPost)
@@ -82,7 +84,7 @@ namespace BlogApp.API.Controllers
             return NoContent();
         }
 
-        // DELETE /api/posts/{id} - Delete a post
+        // Deletes a post
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeletePost(int id)
