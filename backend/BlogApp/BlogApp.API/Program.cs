@@ -1,4 +1,5 @@
 using BlogApp.API.Data;
+using BlogApp.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.API
@@ -17,6 +18,9 @@ namespace BlogApp.API
             // Configure MSSQL Database
             builder.Services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register repositories
+            builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
             var app = builder.Build();
 
