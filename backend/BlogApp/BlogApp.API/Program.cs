@@ -1,3 +1,5 @@
+using BlogApp.API.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.API
 {
@@ -8,11 +10,13 @@ namespace BlogApp.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Configure MSSQL Database
+            builder.Services.AddDbContext<BlogContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
@@ -24,9 +28,7 @@ namespace BlogApp.API
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 
