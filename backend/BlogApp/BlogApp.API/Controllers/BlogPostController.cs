@@ -1,5 +1,6 @@
 using BlogApp.API.Models;
 using BlogApp.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.API.Controllers
@@ -37,6 +38,7 @@ namespace BlogApp.API.Controllers
 
         // POST /api/posts - Create a new post
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePost([FromBody] CreateBlogPostDto createBlogPostDto)
         {
             if (!ModelState.IsValid)
@@ -58,6 +60,7 @@ namespace BlogApp.API.Controllers
 
         // PUT /api/posts/{id} - Update a post
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePost(int id, [FromBody] BlogPost blogPost)
         {
             if (id != blogPost.Id)
@@ -81,6 +84,7 @@ namespace BlogApp.API.Controllers
 
         // DELETE /api/posts/{id} - Delete a post
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeletePost(int id)
         {
             var post = await _repository.GetByIdAsync(id);

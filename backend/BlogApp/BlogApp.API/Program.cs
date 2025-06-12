@@ -1,6 +1,9 @@
 using BlogApp.API.Data;
 using BlogApp.API.Repositories;
+using BlogApp.API.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BlogApp.API
 {
@@ -19,6 +22,32 @@ namespace BlogApp.API
             builder.Services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Configure Identity
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<BlogContext>()
+                .AddDefaultTokenProviders();
+
+            // Configure Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                        System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
+
             // Register repositories
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
@@ -32,6 +61,7 @@ namespace BlogApp.API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication(); // Add authentication middleware
             app.UseAuthorization();
 
             app.MapControllers();
