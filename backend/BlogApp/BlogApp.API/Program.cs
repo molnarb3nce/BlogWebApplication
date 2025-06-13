@@ -92,6 +92,17 @@ namespace BlogApp.API
             // Register repositories (BlogPostRepository, InMemoryRepository)
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -100,6 +111,9 @@ namespace BlogApp.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // Enable CORS
+            app.UseCors("AllowFrontend");
 
             app.UseHttpsRedirection();
             app.UseAuthentication(); // Add authentication middleware
