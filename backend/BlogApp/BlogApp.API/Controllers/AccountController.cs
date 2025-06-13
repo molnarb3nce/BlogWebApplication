@@ -76,24 +76,22 @@ namespace BlogApp.API.Controllers
             return Ok(new { Token = tokenHandler.WriteToken(token) });
         }
 
+        // Delete user by username and password
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDto deleteUserDto)
         {
-            // Find the user by username
             var user = await _userManager.FindByNameAsync(deleteUserDto.Username);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
 
-            // Verify the password
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, deleteUserDto.Password);
             if (!isPasswordValid)
             {
                 return Unauthorized("Invalid password.");
             }
 
-            // Delete the user
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
