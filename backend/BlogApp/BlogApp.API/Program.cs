@@ -89,7 +89,7 @@ namespace BlogApp.API
                 };
             });
 
-            // Register repositories
+            // Register repositories (BlogPostRepository, InMemoryRepository)
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
             var app = builder.Build();
