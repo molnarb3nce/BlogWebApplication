@@ -1,0 +1,14 @@
+backend/BlogApp/.vs/
+
+# Build folders
+/backend/BlogApp/BlogApp.API/obj
+/backend/BlogApp/BlogApp.API/bin
+
+# Other temporary files
+*.log
+*.tmp
+*.json
+*.cache
+*.config
+*.json
+*.dll

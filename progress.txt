@@ -1,0 +1,62 @@
+1.	Database Connection:
+    •	MSSQL database connection via EF Core.
+    •	BlogContext configured with the connection string in appsettings.json.
+
+2.	Entity Framework Core:
+    •	BlogPost entity representing the database table.
+    •	Code-first approach used to create the table.
+
+3.	Repository Pattern:
+    •	IBlogPostRepository interface defining the methods.
+    •	BlogPostRepository implementing the interface with EF Core methods.
+    •	Dependency Injection configured in Program.cs.
+
+4.	DTO for Separation:
+    •	CreateBlogPostDto for clean separation of API contract and database model.
+
+5.	Controller:
+    •	BlogPostController implementing RESTful API endpoints (GET, POST, PUT, DELETE).
+
+6.	Authentication and Authorization:
+    •	ASP.NET Core Identity Integration:
+        •	BlogContext updated to inherit from IdentityDbContext<User> to manage user authentication and authorization.
+        •	Identity tables (AspNetUsers, AspNetRoles, etc.) created in the database via migration.
+    •	JWT Authentication:
+        •	Configured JWT authentication in Program.cs to issue tokens for authenticated users.
+        •	JWT settings (Key, Issuer, Audience) added in appsettings.json.
+
+7.	User Management:
+    •	User Model:
+    •	Extended the User class (derived from IdentityUser) to include additional properties:
+        •	FirstName
+        •	LastName
+        •	Age
+    •	UserRegistrationDto:
+        •	Created a DTO for user registration with validation attributes for:
+            •	Username
+            •	Email
+            •	Password
+            •	FirstName
+            •	LastName
+            •	Age
+    •	UserLoginDto:
+        •	Created a DTO for user login with:
+            •	UserName
+            •	Password
+
+8.	AccountController:
+    •	Endpoints:
+        •	POST /api/account/register: Allows users to register by providing their details.
+        •	POST /api/account/login: Authenticates users and issues a JWT for subsequent API calls.
+    •	Logic:
+        •	Used UserManager<User> for user creation and validation.
+        •	Used SignInManager<User> for login functionality.
+        •	Generated JWT tokens for authenticated users.
+
+9.	Endpoint Protection:
+    •	Authorization:
+        •	Added [Authorize] attribute to the POST, PUT, and DELETE endpoints in BlogPostController to restrict access to authenticated users.
+
+10.	Database Updates:
+    •	Migration:
+        •	Applied migrations to update the database schema with Identity tables and the new User properties (FirstName, LastName, Age).
