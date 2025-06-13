@@ -6,10 +6,8 @@ namespace BlogApp.API.Models
     public class UserLoginDto
     {
         // User name for the account
-        [Required]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
         // Password for the account
-        [Required]
-        public string Password { get; set; }
+        public required string Password { get; set; }
     }
 }

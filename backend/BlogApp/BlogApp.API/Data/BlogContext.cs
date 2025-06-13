@@ -11,5 +11,15 @@ namespace BlogApp.API.Data
         public BlogContext(DbContextOptions<BlogContext> options) : base(options) { }
 
         public DbSet<BlogPost> BlogPosts { get; set; }
+
+        // This is a method to reset the database and reseed the identity column
+        public async Task ResetDatabaseAsync()
+        {
+            await Database.EnsureDeletedAsync();
+
+            await Database.EnsureCreatedAsync();
+
+            await Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('BlogPosts', RESEED, 0)");
+        }
     }
 }

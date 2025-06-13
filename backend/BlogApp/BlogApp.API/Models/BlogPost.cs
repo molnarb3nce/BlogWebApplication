@@ -6,11 +6,11 @@
         // Unique identifier for the blog post
         public int Id { get; set; }
         // Title of the blog post
-        public string Title { get; set; }
+        public required string Title { get; set; }
         // Content of the blog post
-        public string Content { get; set; }
+        public required string Content { get; set; }
         // Author of the blog post
-        public string Author { get; set; }
+        public required string Author { get; set; }
         // Date and time when the blog post was created
         public DateTime DateCreated { get; set; }
     }

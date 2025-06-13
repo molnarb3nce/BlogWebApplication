@@ -52,7 +52,7 @@ namespace BlogApp.API.Controllers
             {
                 Title = createBlogPostDto.Title,
                 Content = createBlogPostDto.Content,
-                Author = createBlogPostDto.Author,
+                Author = string.IsNullOrWhiteSpace(createBlogPostDto.Author) ? "Anonymous Author" : createBlogPostDto.Author,
                 DateCreated = DateTime.Now
             };
 
@@ -63,11 +63,11 @@ namespace BlogApp.API.Controllers
         // Updates a post
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdatePost(int id, [FromBody] BlogPost blogPost)
+        public async Task<IActionResult> UpdatePost(int id, [FromBody] UpdateBlogPostDto updateBlogPostDto)
         {
-            if (id != blogPost.Id)
+            if (updateBlogPostDto == null)
             {
-                return BadRequest("Post ID mismatch");
+                return BadRequest("Request body cannot be null.");
             }
 
             var existingPost = await _repository.GetByIdAsync(id);
@@ -76,9 +76,21 @@ namespace BlogApp.API.Controllers
                 return NotFound();
             }
 
-            existingPost.Title = blogPost.Title;
-            existingPost.Content = blogPost.Content;
-            existingPost.Author = blogPost.Author;
+            // Update only the fields that are not null or empty
+            if (!string.IsNullOrWhiteSpace(updateBlogPostDto.Title))
+            {
+                existingPost.Title = updateBlogPostDto.Title;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateBlogPostDto.Content))
+            {
+                existingPost.Content = updateBlogPostDto.Content;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateBlogPostDto.Author))
+            {
+                existingPost.Author = updateBlogPostDto.Author;
+            }
 
             await _repository.UpdateAsync(existingPost);
             return NoContent();

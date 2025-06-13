@@ -7,10 +7,10 @@ namespace BlogApp.API.Models
     public class User : IdentityUser
     {
         // First name of the user
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
         // Last name of the user
-        public string LastName { get; set; }
-        // Age of the user
-        public int Age { get; set; }
+        public string? LastName { get; set; }
+        // Age of the user which is required so later age validation can be applied
+        public required int Age { get; set; }
     }
 }

@@ -58,6 +58,7 @@ namespace BlogApp.API.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            Console.WriteLine($"Debug: JWT Key = {BitConverter.ToString(key)}");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new[]
@@ -73,6 +74,33 @@ namespace BlogApp.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return Ok(new { Token = tokenHandler.WriteToken(token) });
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDto deleteUserDto)
+        {
+            // Find the user by username
+            var user = await _userManager.FindByNameAsync(deleteUserDto.Username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Verify the password
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, deleteUserDto.Password);
+            if (!isPasswordValid)
+            {
+                return Unauthorized("Invalid password.");
+            }
+
+            // Delete the user
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to delete the user.");
+            }
+
+            return Ok("User deleted successfully.");
         }
     }
 }
