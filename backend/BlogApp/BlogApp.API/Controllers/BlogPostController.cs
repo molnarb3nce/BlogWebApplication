@@ -93,7 +93,7 @@ namespace BlogApp.API.Controllers
             }
 
             await _repository.UpdateAsync(existingPost);
-            return NoContent();
+            return Ok(existingPost);
         }
 
         // Deletes a post
