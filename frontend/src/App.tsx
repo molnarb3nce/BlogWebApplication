@@ -6,6 +6,7 @@ import BlogPostPage from "./pages/BlogPostPage";
 import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import ProfilePage from "./pages/ProfilePage";
+import ScrollMode from "./pages/ScrollMode";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/blogpost/:id" element={<BlogPostPage />} />
+        <Route path="/scroll-mode" element={<ScrollMode />} />
       </Routes>
     </Router>
   );

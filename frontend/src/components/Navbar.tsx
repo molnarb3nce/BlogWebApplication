@@ -42,10 +42,12 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
               ? [
                   <MenuItem key="login" onClick={() => navigate("/login")}>Login</MenuItem>,
                   <MenuItem key="register" onClick={() => navigate("/register")}>Register</MenuItem>,
+                  <MenuItem key="scroll-mode" onClick={() => navigate("/scroll-mode")}>Scroll Mode</MenuItem>,
                 ]
               : [
                   <MenuItem key="profile" onClick={() => navigate("/profile")}>Profile</MenuItem>,
                   <MenuItem key="create" onClick={handleCreatePostOpen}>Create Post</MenuItem>,
+                  <MenuItem key="scroll-mode" onClick={() => navigate("/scroll-mode")}>Scroll Mode</MenuItem>,
                   <MenuItem key="logout" onClick={() => { onLogout(); navigate("/"); }}>Logout</MenuItem>,
                 ]}
           </Menu>
