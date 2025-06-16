@@ -16,10 +16,10 @@ import PostDialog from "../components/PostDialog";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState({
-    firstName: "Loading...",
-    lastName: "Loading...",
-    email: "Loading...",
-    age: "Loading...",
+    firstName: "Unknown",
+    lastName: "Unknown",
+    email: "Unknown",
+    age: "Unknown",
   });
   const [blogs, setBlogs] = useState<any[]>([]);
   const [deleteCredentials, setDeleteCredentials] = useState({ username: "", password: "" });
@@ -30,8 +30,13 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userId = localStorage.getItem("userId");
-        const response = await fetch(`https://localhost:5000/api/account/${userId}`, {
+        const username = localStorage.getItem("username"); // Retrieve username from localStorage
+
+        if (!username) {
+          throw new Error("Username is null or undefined.");
+        }
+
+        const response = await fetch(`http://localhost:5000/api/account/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -46,13 +51,18 @@ const ProfilePage = () => {
 
     const fetchUserBlogs = async () => {
       try {
-        const userId = localStorage.getItem("userId");
-        const response = await fetch(`https://localhost:5000/api/blogpost/user/${userId}`, {
+        const username = localStorage.getItem("username"); // Retrieve username from localStorage
+
+        if (!username) {
+          throw new Error("Username is null or undefined.");
+        }
+
+        const response = await fetch(`http://localhost:5000/api/blogpost/user/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        if (!response.ok) throw new Error("Failed to fetch blogs");
+        if (!response.ok) throw new Error("Failed to fetch user blogs");
         const data = await response.json();
         setBlogs(data);
       } catch (error) {
@@ -66,10 +76,11 @@ const ProfilePage = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch("https://localhost:5000/api/account/delete", {
+      const response = await fetch("http://localhost:5000/api/account/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token
         },
         body: JSON.stringify(deleteCredentials),
       });
@@ -79,7 +90,7 @@ const ProfilePage = () => {
       }
 
       alert("Account deleted successfully!");
-      localStorage.removeItem("token");
+      localStorage.clear();
       window.location.href = "/";
     } catch (error: any) {
       setDeleteError(error.message);
@@ -89,7 +100,7 @@ const ProfilePage = () => {
   // Handle blog deletion
   const handleDeleteBlog = async (blogId: string) => {
     try {
-      const response = await fetch(`https://localhost:5000/api/blogpost/${blogId}`, {
+      const response = await fetch(`http://localhost:5000/api/blogpost/${blogId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -192,7 +203,7 @@ const ProfilePage = () => {
           open={isPostDialogOpen}
           onClose={handlePostDialogClose}
           onSubmit={async (formData) => {
-            const response = await fetch(`https://localhost:5000/api/blogpost/${selectedBlog.id}`, {
+            const response = await fetch(`http://localhost:5000/api/blogpost/${selectedBlog.id}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",

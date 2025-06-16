@@ -103,13 +103,13 @@ namespace BlogApp.API.Controllers
             return Ok("User deleted successfully.");
         }
 
-        // Endpoint to retrieve account data by account ID
-        [HttpGet("{id}")]
+        // Endpoint to retrieve account data by username
+        [HttpGet("{username}")]
         [Authorize]
-        public async Task<IActionResult> GetAccountById(string id)
+        public async Task<IActionResult> GetAccountByUsername(string username)
         {
-            // Retrieve the user by ID
-            var user = await _userManager.FindByIdAsync(id);
+            // Retrieve the user by username
+            var user = await _userManager.FindByNameAsync(username);
             if (user == null)
             {
                 return NotFound("User not found.");
