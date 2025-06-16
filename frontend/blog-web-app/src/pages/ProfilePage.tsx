@@ -27,10 +27,12 @@ const ProfilePage = () => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
 
+  // Fetch user data and blogs
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("https://localhost:5000/api/account/me", {
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`https://localhost:5000/api/account/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -43,10 +45,15 @@ const ProfilePage = () => {
       }
     };
 
-    const fetchBlogs = async () => {
+    const fetchUserBlogs = async () => {
       try {
-        const response = await fetch("https://localhost:5000/api/blogpost");
-        if (!response.ok) throw new Error("Failed to fetch blogs");
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`https://localhost:5000/api/blogpost/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (!response.ok) throw new Error("Failed to fetch user blogs");
         const data = await response.json();
         setBlogs(data);
       } catch (error) {
@@ -55,7 +62,7 @@ const ProfilePage = () => {
     };
 
     fetchUserData();
-    fetchBlogs();
+    fetchUserBlogs();
   }, []);
 
   const handleDeleteAccount = async () => {
@@ -100,6 +107,7 @@ const ProfilePage = () => {
     }
   };
 
+  // Handle blog editing
   const handleEditBlog = (blog: any) => {
     setSelectedBlog(blog);
     setIsPostDialogOpen(true);

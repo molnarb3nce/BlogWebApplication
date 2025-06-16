@@ -13,5 +13,7 @@
         public required string Author { get; set; }
         // Date and time when the blog post was created
         public DateTime DateCreated { get; set; }
+        // The Id of the author, which is required for linking the post to the user
+        public required string AuthorId { get; set; }
     }
 }
