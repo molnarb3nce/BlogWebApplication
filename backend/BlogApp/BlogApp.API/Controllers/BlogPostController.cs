@@ -42,12 +42,12 @@ namespace BlogApp.API.Controllers
         }
 
         // Retrieves all posts by a specific user
-        [HttpGet("user/{userId}")]
+        [HttpGet("user/{username}")]
         [Authorize]
-        public async Task<IActionResult> GetPostsByUser(string userId)
+        public async Task<IActionResult> GetPostsByUser(string username)
         {
             var posts = await _repository.GetAllAsync();
-            var userPosts = posts.Where(post => post.AuthorId == userId);
+            var userPosts = posts.Where(post => post.AuthorId == username);
 
             if (!userPosts.Any())
             {
@@ -67,15 +67,15 @@ namespace BlogApp.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Get the currently logged-in user's ID
-            var userId = User.FindFirst("id")?.Value;
-            if (userId == null)
+            // Get the currently logged-in user's username
+            var username = User.FindFirst("username")?.Value;
+            if (username == null)
             {
                 return Unauthorized("User is not authenticated.");
             }
 
             // Retrieve the user from the database
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByNameAsync(username);
             if (user == null)
             {
                 return Unauthorized("User not found.");
@@ -102,7 +102,7 @@ namespace BlogApp.API.Controllers
                 Title = createBlogPostDto.Title,
                 Content = createBlogPostDto.Content,
                 Author = author,
-                AuthorId = userId,
+                AuthorId = username,
                 DateCreated = DateTime.Now
             };
 

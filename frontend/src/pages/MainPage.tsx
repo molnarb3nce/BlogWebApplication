@@ -4,7 +4,7 @@ import { Container, Grid } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";
 
 const fetchBlogPosts = async () => {
-  const response = await fetch("https://localhost:5000/api/blogpost");
+  const response = await fetch("http://localhost:5000/api/blogpost");
   if (!response.ok) {
     throw new Error("Error fetching blog posts: " + response.statusText);
   }

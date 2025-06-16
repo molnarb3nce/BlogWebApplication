@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Container, Typography } from "@mui/material";
 
 const fetchBlogPostById = async (id: string) => {
-  const response = await fetch(`https://localhost:5000/api/blogpost/${id}`);
+  const response = await fetch(`http://localhost:5000/api/blogpost/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch post");
   }
