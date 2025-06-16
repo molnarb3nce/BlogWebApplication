@@ -30,7 +30,8 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("https://localhost:5000/api/account/me", {
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`https://localhost:5000/api/account/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -43,9 +44,14 @@ const ProfilePage = () => {
       }
     };
 
-    const fetchBlogs = async () => {
+    const fetchUserBlogs = async () => {
       try {
-        const response = await fetch("https://localhost:5000/api/blogpost");
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`https://localhost:5000/api/blogpost/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (!response.ok) throw new Error("Failed to fetch blogs");
         const data = await response.json();
         setBlogs(data);
@@ -55,7 +61,7 @@ const ProfilePage = () => {
     };
 
     fetchUserData();
-    fetchBlogs();
+    fetchUserBlogs();
   }, []);
 
   const handleDeleteAccount = async () => {

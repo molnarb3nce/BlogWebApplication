@@ -8,7 +8,5 @@ namespace BlogApp.API.Models
         public required string Title { get; set; }
         // Content of the blog post
         public required string Content { get; set; }
-        // Author of the blog post as default it becomes anonymous author
-        public string? Author { get; set; }
     }
 }
