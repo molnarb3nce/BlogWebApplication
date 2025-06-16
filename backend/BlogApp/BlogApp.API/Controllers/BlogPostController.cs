@@ -21,6 +21,16 @@ namespace BlogApp.API.Controllers
             _userManager = userManager;
         }
 
+        // Get the total number of posts
+        [HttpGet("count")]
+        public async Task<IActionResult> GetPostCount()
+        {
+            var posts = await _repository.GetAllAsync();
+            var postCount = posts.Count();
+
+            return Ok(postCount);
+        }
+
         // Retrievee all posts
         [HttpGet]
         public async Task<IActionResult> GetAllPosts()
@@ -38,6 +48,22 @@ namespace BlogApp.API.Controllers
             {
                 return NotFound();
             }
+            return Ok(post);
+        }
+
+        // Endpoint to retrieve a post by its order index
+        [HttpGet("order/{index}")]
+        public async Task<IActionResult> GetPostByOrder(int index)
+        {
+            var posts = await _repository.GetAllAsync();
+            var orderedPosts = posts.OrderBy(post => post.DateCreated).ToList();
+
+            if (index < 0 || index >= orderedPosts.Count)
+            {
+                return NotFound("No post found at the specified index.");
+            }
+
+            var post = orderedPosts[index];
             return Ok(post);
         }
 
