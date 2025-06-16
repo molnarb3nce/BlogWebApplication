@@ -1,4 +1,5 @@
 using BlogApp.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -78,6 +79,7 @@ namespace BlogApp.API.Controllers
 
         // Delete user by username and password
         [HttpDelete("delete")]
+        [Authorize]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDto deleteUserDto)
         {
             var user = await _userManager.FindByNameAsync(deleteUserDto.Username);
@@ -99,6 +101,32 @@ namespace BlogApp.API.Controllers
             }
 
             return Ok("User deleted successfully.");
+        }
+
+        // Endpoint to retrieve account data by account ID
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetAccountById(string id)
+        {
+            // Retrieve the user by ID
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Map the user to the UserDetailsDto
+            var accountData = new UserDetailsDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Age = user.Age
+            };
+
+            return Ok(accountData);
         }
     }
 }

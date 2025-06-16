@@ -12,3 +12,4 @@ backend/BlogApp/.vs/
 *.config
 *.json
 *.dll
+/frontend/blog-web-app/node_modules

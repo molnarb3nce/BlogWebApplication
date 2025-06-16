@@ -1,6 +1,7 @@
 using BlogApp.API.Models;
 using BlogApp.API.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.API.Controllers
@@ -12,10 +13,12 @@ namespace BlogApp.API.Controllers
     public class BlogPostController : ControllerBase
     {
         private readonly IBlogPostRepository _repository;
+        private readonly UserManager<User> _userManager;
 
-        public BlogPostController(IBlogPostRepository repository)
+        public BlogPostController(IBlogPostRepository repository, UserManager<User> userManager)
         {
             _repository = repository;
+            _userManager = userManager;
         }
 
         // Retrievee all posts
@@ -38,6 +41,22 @@ namespace BlogApp.API.Controllers
             return Ok(post);
         }
 
+        // Retrieves all posts by a specific user
+        [HttpGet("user/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetPostsByUser(string userId)
+        {
+            var posts = await _repository.GetAllAsync();
+            var userPosts = posts.Where(post => post.AuthorId == userId);
+
+            if (!userPosts.Any())
+            {
+                return NotFound("No posts found for this user.");
+            }
+
+            return Ok(userPosts);
+        }
+
         // Creates a new post
         [HttpPost]
         [Authorize]
@@ -48,11 +67,42 @@ namespace BlogApp.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Get the currently logged-in user's ID
+            var userId = User.FindFirst("id")?.Value;
+            if (userId == null)
+            {
+                return Unauthorized("User is not authenticated.");
+            }
+
+            // Retrieve the user from the database
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            // Determine the author name
+            string author = "Anonymous Author";
+            if (!string.IsNullOrWhiteSpace(user.FirstName) && !string.IsNullOrWhiteSpace(user.LastName))
+            {
+                author = $"{user.FirstName} {user.LastName}";
+            }
+            else if (!string.IsNullOrWhiteSpace(user.FirstName))
+            {
+                author = user.FirstName;
+            }
+            else if (!string.IsNullOrWhiteSpace(user.LastName))
+            {
+                author = user.LastName;
+            }
+
+            // Create the blog post
             var blogPost = new BlogPost
             {
                 Title = createBlogPostDto.Title,
                 Content = createBlogPostDto.Content,
-                Author = string.IsNullOrWhiteSpace(createBlogPostDto.Author) ? "Anonymous Author" : createBlogPostDto.Author,
+                Author = author,
+                AuthorId = userId,
                 DateCreated = DateTime.Now
             };
 
