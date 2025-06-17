@@ -45,8 +45,7 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
         position="static"
         elevation={0}
         sx={{
-          backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
-          backdropFilter: "blur(10px)", // Homályosítás
+          backgroundColor: "#ffffff", // Fehér háttér
           borderRadius: "16px", // Lekerekített sarkok
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
           width: "100%", // Full width of parent container
@@ -110,17 +109,23 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
           },
         }}
       >
-        <List>
+        <List sx={{ display: "block" }}>
           {menuOptions.map((option, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={option.action}>
-                <ListItemText
-                  primary={option.label}
-                  sx={{
-                    color: "#1a2b6d", // Sötétkék szöveg
-                    fontWeight: 600,
-                  }}
-                />
+              <ListItemButton
+                onClick={option.action}
+                sx={{
+                  backgroundColor: "#ffffff", // Fehér háttér
+                  fontWeight: 600,
+                  color: "#1a2b6d", // Sötétkék szöveg
+                  borderRadius: "8px", // Lekerekített sarkok
+                  marginBottom: "8px",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0", // Halvány szürke háttér hover esetén
+                  },
+                }}
+              >
+                <ListItemText primary={option.label} />
               </ListItemButton>
             </ListItem>
           ))}
