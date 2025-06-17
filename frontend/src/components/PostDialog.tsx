@@ -59,9 +59,11 @@ const PostDialog: React.FC<PostDialogProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Submit
+        <Button onClick={onClose} sx={{ color: "#1a2b6d" }}>
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit} color="primary" variant="contained">
+          Save
         </Button>
       </DialogActions>
     </Dialog>

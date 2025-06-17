@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Container, Typography } from "@mui/material";
+import { TextField, Button, Container, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const RegistrationPage = () => {
@@ -36,60 +36,84 @@ const RegistrationPage = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleRegister(); // Az Enter lenyomásakor aktiválja a gombot
+    }
+  };
+
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
-        Register
-      </Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      {success && <Typography color="primary">Registration successful! Redirecting...</Typography>}
-      <TextField
-        label="Username"
-        fullWidth
-        margin="normal"
-        value={formData.username}
-        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-      />
-      <TextField
-        label="Email"
-        fullWidth
-        margin="normal"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        fullWidth
-        margin="normal"
-        value={formData.password}
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-      />
-      <TextField
-        label="First Name"
-        fullWidth
-        margin="normal"
-        value={formData.firstName}
-        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-      />
-      <TextField
-        label="Last Name"
-        fullWidth
-        margin="normal"
-        value={formData.lastName}
-        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-      />
-      <TextField
-        label="Age"
-        type="number"
-        fullWidth
-        margin="normal"
-        value={formData.age}
-        onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-      />
-      <Button variant="contained" color="primary" fullWidth onClick={handleRegister}>
-        Register
-      </Button>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          backgroundColor: "#ffffff", // Fehér háttér
+          borderRadius: "16px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Register
+        </Typography>
+        {error && <Typography color="error">{error}</Typography>}
+        {success && <Typography color="primary">Registration successful! Redirecting...</Typography>}
+        <TextField
+          label="Username"
+          fullWidth
+          margin="normal"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+        />
+        <TextField
+          label="Email"
+          fullWidth
+          margin="normal"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        />
+        <TextField
+          label="First Name"
+          fullWidth
+          margin="normal"
+          value={formData.firstName}
+          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+        />
+        <TextField
+          label="Last Name"
+          fullWidth
+          margin="normal"
+          value={formData.lastName}
+          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+        />
+        <TextField
+          label="Age"
+          type="number"
+          fullWidth
+          margin="normal"
+          value={formData.age}
+          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+        />
+        <Button variant="contained" color="primary" fullWidth onClick={handleRegister} onKeyDown={handleKeyDown}>
+          Register
+        </Button>
+        <Typography
+          variant="body2"
+          sx={{ marginTop: "16px", textAlign: "center", color: "#1a2b6d", cursor: "pointer" }}
+          onClick={() => navigate("/login")}
+        >
+          Already have an account? Login here.
+        </Typography>
+      </Paper>
     </Container>
   );
 };

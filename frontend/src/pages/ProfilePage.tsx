@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
   Typography,
   TextField,
   Button,
   Divider,
-  List,
-  ListItem,
-  ListItemText,
+  Grid,
+  Paper,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,12 +29,14 @@ const ProfilePage = () => {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false); // Fiók törlés megerősítő ablak
+  const [isBlogConfirmDialogOpen, setIsBlogConfirmDialogOpen] = useState(false); // Blog törlés megerősítő ablak
+  const [blogToDelete, setBlogToDelete] = useState<string | null>(null); // Törlendő blog ID
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const username = localStorage.getItem("username"); // Retrieve username from localStorage
-
+        const username = localStorage.getItem("username");
         if (!username) {
           throw new Error("Username is null or undefined.");
         }
@@ -51,8 +56,7 @@ const ProfilePage = () => {
 
     const fetchUserBlogs = async () => {
       try {
-        const username = localStorage.getItem("username"); // Retrieve username from localStorage
-
+        const username = localStorage.getItem("username");
         if (!username) {
           throw new Error("Username is null or undefined.");
         }
@@ -80,7 +84,7 @@ const ProfilePage = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(deleteCredentials),
       });
@@ -111,7 +115,9 @@ const ProfilePage = () => {
         throw new Error("Failed to delete blog post.");
       }
 
-      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== blogId)); // Remove the deleted blog from the list
+      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== blogToDelete));
+      setIsBlogConfirmDialogOpen(false); // Bezárjuk a megerősítő ablakot
+      setBlogToDelete(null); // Törlendő blog ID törlése
     } catch (error) {
       console.error(error);
     }
@@ -134,47 +140,79 @@ const ProfilePage = () => {
     handlePostDialogClose();
   };
 
+  const handleConfirmDelete = () => {
+    setIsConfirmDialogOpen(true); // Fiók törlés megerősítő ablak megnyitása
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmDialogOpen(false); // Fiók törlés megerősítő ablak bezárása
+  };
+
+  const handleBlogConfirmDelete = (blogId: string) => {
+    setBlogToDelete(blogId); // Beállítjuk a törlendő blog ID-t
+    setIsBlogConfirmDialogOpen(true); // Blog törlés megerősítő ablak megnyitása
+  };
+
+  const handleCancelBlogDelete = () => {
+    setIsBlogConfirmDialogOpen(false); // Blog törlés megerősítő ablak bezárása
+    setBlogToDelete(null); // Törlendő blog ID törlése
+  };
+
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
+    <>
+      <Typography variant="h4" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 600 }}>
         Profile
       </Typography>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 500 }}>
         Personal Data:
       </Typography>
-      <Typography>Firstname: {userData.firstName}</Typography>
-      <Typography>Lastname: {userData.lastName}</Typography>
-      <Typography>Email: {userData.email}</Typography>
-      <Typography>Age: {userData.age}</Typography>
+      <Typography sx={{ color: "#1a2b6d" }}>Firstname: {userData.firstName}</Typography>
+      <Typography sx={{ color: "#1a2b6d" }}>Lastname: {userData.lastName}</Typography>
+      <Typography sx={{ color: "#1a2b6d" }}>Email: {userData.email}</Typography>
+      <Typography sx={{ color: "#1a2b6d" }}>Age: {userData.age}</Typography>
 
-      <Divider style={{ margin: "20px 0" }} />
+      <Divider sx={{ margin: "20px 0" }} />
 
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 500 }}>
         My Blogs:
       </Typography>
-      <List>
+      <Grid container spacing={2}>
         {blogs.map((blog) => (
-          <ListItem
-            key={blog.id}
-            secondaryAction={
-              <>
-                <IconButton edge="end" onClick={() => handleEditBlog(blog)}>
+          <Grid item xs={12} sm={6} md={4} key={blog.id}>
+            <Paper
+              elevation={3}
+              sx={{
+                padding: 2,
+                borderRadius: "8px",
+                backgroundColor: "#ffffff",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                position: "relative",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#1a2b6d" }}>
+                {blog.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#1a2b6d", marginBottom: "16px" }}>
+                Created: {new Date(blog.dateCreated).toLocaleDateString()}
+              </Typography>
+
+              {/* Action buttons */}
+              <div style={{ position: "absolute", top: 8, right: 8 }}>
+                <IconButton onClick={() => handleEditBlog(blog)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={() => handleDeleteBlog(blog.id)}>
+                <IconButton onClick={() => handleBlogConfirmDelete(blog.id)}>
                   <DeleteIcon />
                 </IconButton>
-              </>
-            }
-          >
-            <ListItemText primary={blog.title} secondary={blog.content.substring(0, 50) + "..."} />
-          </ListItem>
+              </div>
+            </Paper>
+          </Grid>
         ))}
-      </List>
+      </Grid>
 
-      <Divider style={{ margin: "20px 0" }} />
+      <Divider sx={{ margin: "20px 0" }} />
 
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 500 }}>
         Delete Account:
       </Typography>
       {deleteError && <Typography color="error">{deleteError}</Typography>}
@@ -184,6 +222,10 @@ const ProfilePage = () => {
         margin="normal"
         value={deleteCredentials.username}
         onChange={(e) => setDeleteCredentials({ ...deleteCredentials, username: e.target.value })}
+        sx={{
+          backgroundColor: "#inherit",
+          borderRadius: "8px",
+        }}
       />
       <TextField
         label="Password"
@@ -192,8 +234,26 @@ const ProfilePage = () => {
         margin="normal"
         value={deleteCredentials.password}
         onChange={(e) => setDeleteCredentials({ ...deleteCredentials, password: e.target.value })}
+        sx={{
+          backgroundColor: "#inherit",
+          borderRadius: "8px",
+        }}
       />
-      <Button variant="contained" color="error" fullWidth onClick={handleDeleteAccount}>
+      <Button
+        variant="contained"
+        color="error"
+        fullWidth
+        onClick={handleConfirmDelete} // Fiók törlés megerősítő ablak megnyitása
+        sx={{
+          backgroundColor: "#d32f2f", // Piros háttér
+          color: "#ffffff", // Fehér szöveg
+          textTransform: "none",
+          fontWeight: 600,
+          "&:hover": {
+            backgroundColor: "#b71c1c", // Sötétebb piros hover állapotban
+          },
+        }}
+      >
         Delete Account
       </Button>
 
@@ -223,7 +283,47 @@ const ProfilePage = () => {
           dialogTitle="Edit Blog Post"
         />
       )}
-    </Container>
+      {/* Megerősítő ablak */}
+      <Dialog open={isConfirmDialogOpen} onClose={handleCancelDelete}>
+        <DialogTitle sx={{ color: "#1a2b6d" }}>Are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: "#1a2b6d" }}>
+            Are you sure you want to delete your account? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} sx={{ color: "#1a2b6d" }}>
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteAccount} color="error">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Blog törlés megerősítő ablak */}
+      <Dialog open={isBlogConfirmDialogOpen} onClose={handleCancelBlogDelete}>
+        <DialogTitle sx={{ color: "#1a2b6d" }}>Are you sure?</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: "#1a2b6d" }}>
+            Are you sure you want to delete this blog post? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelBlogDelete} sx={{ color: "#1a2b6d" }}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              if (blogToDelete) handleDeleteBlog(blogToDelete);
+            }}
+            color="error"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
