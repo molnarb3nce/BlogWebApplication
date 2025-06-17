@@ -4,9 +4,8 @@ import {
   TextField,
   Button,
   Divider,
-  List,
-  ListItem,
-  ListItemText,
+  Grid,
+  Paper,
   IconButton,
   Dialog,
   DialogActions,
@@ -177,40 +176,39 @@ const ProfilePage = () => {
       <Typography variant="h6" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 500 }}>
         My Blogs:
       </Typography>
-      <List>
+      <Grid container spacing={2}>
         {blogs.map((blog) => (
-          <ListItem
-            key={blog.id}
-            secondaryAction={
-              <>
-                <IconButton edge="end" onClick={() => handleEditBlog(blog)}>
+          <Grid item xs={12} sm={6} md={4} key={blog.id}>
+            <Paper
+              elevation={3}
+              sx={{
+                padding: 2,
+                borderRadius: "8px",
+                backgroundColor: "#ffffff",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                position: "relative",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#1a2b6d" }}>
+                {blog.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#1a2b6d", marginBottom: "16px" }}>
+                Created: {new Date(blog.dateCreated).toLocaleDateString()}
+              </Typography>
+
+              {/* Action buttons */}
+              <div style={{ position: "absolute", top: 8, right: 8 }}>
+                <IconButton onClick={() => handleEditBlog(blog)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={() => handleBlogConfirmDelete(blog.id)}>
+                <IconButton onClick={() => handleBlogConfirmDelete(blog.id)}>
                   <DeleteIcon />
                 </IconButton>
-              </>
-            }
-            sx={{
-              backgroundColor: "#ffffff",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              marginBottom: "8px",
-              width: "300px", // Keskenyebb posztok
-            }}
-          >
-            <ListItemText
-              primary={blog.title}
-              secondary={
-                <Typography sx={{ color: "#1a2b6d" }}>
-                  Created: {new Date(blog.dateCreated).toLocaleDateString()}
-                </Typography>
-              }
-              sx={{ color: "#1a2b6d" }}
-            />
-          </ListItem>
+              </div>
+            </Paper>
+          </Grid>
         ))}
-      </List>
+      </Grid>
 
       <Divider sx={{ margin: "20px 0" }} />
 

@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Button, Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Button, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import CreatePostDialog from "./CreatePostDialog";
 
 const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLogout: () => void }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Oldalsáv állapota
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
+  const toggleSidebar = (open: boolean) => {
+    setIsSidebarOpen(open);
+  };
 
   const handleCreatePostOpen = () => {
     setIsCreatePostOpen(true);
-    handleMenuClose();
+    toggleSidebar(false);
   };
 
   const handleCreatePostClose = () => {
@@ -27,22 +28,34 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
     queryClient.invalidateQueries({ queryKey: ["blogPosts"] });
   };
 
+  const menuOptions = isAuthenticated
+    ? [
+        { label: "Profile", action: () => { navigate("/profile"); toggleSidebar(false); } },
+        { label: "Create Post", action: () => { handleCreatePostOpen(); toggleSidebar(false); } },
+        { label: "Scroll Mode", action: () => { navigate("/scroll-mode"); toggleSidebar(false); } },
+        { label: "Logout", action: () => { onLogout(); navigate("/"); toggleSidebar(false); } },
+      ]
+    : [
+        { label: "Login", action: () => { navigate("/login"); toggleSidebar(false); } },
+        { label: "Register", action: () => { navigate("/register"); toggleSidebar(false); } },
+        { label: "Scroll Mode", action: () => { navigate("/scroll-mode"); toggleSidebar(false); } },
+      ];
+
   return (
     <>
-      <AppBar 
+      <AppBar
         position="static"
-        elevation = {0}
+        elevation={0}
         sx={{
-          backgroundColor: "rgba(255, 255, 255, 0.3)", // 50% fehér opacitás
-          backdropFilter: "blur(10px)", // Homályosítás a modern hatás érdekében
+          backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
+          backdropFilter: "blur(10px)", // Homályosítás
           borderRadius: "16px", // Lekerekített sarkok
           margin: "8px", // Távolság a szélektől
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Enyhe árnyék
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
         }}
       >
         <Toolbar
           sx={{
-            width: "100%",
             display: "flex",
             justifyContent: "space-between", // A Blog App és Menu gombok közötti távolság
           }}
@@ -63,8 +76,7 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
             Blog App
           </Button>
           <Button
-            color="inherit"
-            onClick={handleMenuOpen}
+            onClick={() => toggleSidebar(true)} // Oldalsáv megnyitása
             sx={{
               color: "#1a2b6d", // Sötétkék szöveg
               fontWeight: 600,
@@ -78,28 +90,44 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
           >
             Menu
           </Button>
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            {!isAuthenticated
-              ? [
-                  <MenuItem key="login" onClick={() => navigate("/login")}>Login</MenuItem>,
-                  <MenuItem key="register" onClick={() => navigate("/register")}>Register</MenuItem>,
-                  <MenuItem key="scroll-mode" onClick={() => navigate("/scroll-mode")}>Scroll Mode</MenuItem>,
-                ]
-              : [
-                  <MenuItem key="profile" onClick={() => navigate("/profile")}>Profile</MenuItem>,
-                  <MenuItem key="create" onClick={handleCreatePostOpen}>Create Post</MenuItem>,
-                  <MenuItem key="scroll-mode" onClick={() => navigate("/scroll-mode")}>Scroll Mode</MenuItem>,
-                  <MenuItem key="logout" onClick={() => { onLogout(); navigate("/"); }}>Logout</MenuItem>,
-                ]}
-          </Menu>
         </Toolbar>
       </AppBar>
+
+      {/* Oldalsáv */}
+      <Drawer
+        anchor="right"
+        open={isSidebarOpen}
+        onClose={() => toggleSidebar(false)} // Oldalsáv bezárása
+        sx={{
+          "& .MuiDrawer-paper": {
+            backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
+            backdropFilter: "blur(10px)", // Homályosítás
+            width: "250px", // Oldalsáv szélessége
+            padding: "16px", // Belső térköz
+          },
+        }}
+      >
+        <List>
+          {menuOptions.map((option, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton onClick={option.action}>
+                <ListItemText
+                  primary={option.label}
+                  sx={{
+                    color: "#1a2b6d", // Sötétkék szöveg
+                    fontWeight: 600,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
       <CreatePostDialog
         open={isCreatePostOpen}
         onClose={handleCreatePostClose}
         onPostCreated={handlePostCreated}
       />
-      <Toolbar />
     </>
   );
 };
