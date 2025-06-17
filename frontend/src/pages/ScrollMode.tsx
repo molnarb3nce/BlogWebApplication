@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "@mui/material";
+import { Box } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";
 import { motion } from "framer-motion";
 
@@ -69,14 +69,16 @@ const ScrollMode = () => {
   }
 
   return (
-    <Container
-      maxWidth="sm"
-      style={{
-        height: "100vh",
+    <Box
+      sx={{
+        height: "100%", // Use 100% instead of 100vh to respect parent
+        width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
+        boxSizing: "border-box",
+        padding: "16px", // Add some padding for mobile
       }}
     >
       <motion.div
@@ -85,11 +87,18 @@ const ScrollMode = () => {
         animate={{ opacity: 1, y: 0 }} // End position
         exit={{ opacity: 0, y: scrollDirection === "down" ? -300 : 300 }} // Exit position
         transition={{ duration: 0.5 }} // Animation duration
-        style={{ width: "100%" }}
+        style={{ 
+          width: "100%",
+          maxWidth: "600px", // Limit max width for better readability
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxSizing: "border-box",
+        }}
       >
         <BlogPostCard post={posts[currentIndex]} />
       </motion.div>
-    </Container>
+    </Box>
   );
 };
 

@@ -32,13 +32,11 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
     ? [
         { label: "Profile", action: () => { navigate("/profile"); toggleSidebar(false); } },
         { label: "Create Post", action: () => { handleCreatePostOpen(); toggleSidebar(false); } },
-        { label: "Scroll Mode", action: () => { navigate("/scroll-mode"); toggleSidebar(false); } },
         { label: "Logout", action: () => { onLogout(); navigate("/"); toggleSidebar(false); } },
       ]
     : [
         { label: "Login", action: () => { navigate("/login"); toggleSidebar(false); } },
         { label: "Register", action: () => { navigate("/register"); toggleSidebar(false); } },
-        { label: "Scroll Mode", action: () => { navigate("/scroll-mode"); toggleSidebar(false); } },
       ];
 
   return (
