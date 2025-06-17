@@ -38,6 +38,12 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
     navigate("/");
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleLogin(); // Az Enter lenyomásakor aktiválja a gombot
+    }
+  };
+
   return (
     <Container maxWidth="sm" sx={{ mt: 8 }}>
       <Paper
@@ -47,6 +53,7 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
           backgroundColor: "#ffffff", // Fehér háttér
           borderRadius: "16px",
           boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          textAlign: "center",
         }}
       >
         <Typography variant="h4" gutterBottom>
@@ -68,9 +75,16 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
           value={credentials.password}
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
         />
-        <Button variant="contained" color="primary" fullWidth onClick={handleLogin}>
+        <Button variant="contained" color="primary" fullWidth onClick={handleLogin} onKeyDown={handleKeyDown}>
           Login
         </Button>
+        <Typography
+          variant="body2"
+          sx={{ marginTop: "16px", textAlign: "center", color: "#1a2b6d", cursor: "pointer" }}
+          onClick={() => navigate("/register")}
+        >
+        Don't have an account? Register here.
+        </Typography>
       </Paper>
     </Container>
   );
