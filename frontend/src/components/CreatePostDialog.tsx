@@ -1,4 +1,3 @@
-import React from "react";
 import PostDialog from "./PostDialog";
 
 const CreatePostDialog = ({

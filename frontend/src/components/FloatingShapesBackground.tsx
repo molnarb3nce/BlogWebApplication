@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const FloatingShapesBackground = () => {
   const requestRef = useRef<number>(0);
@@ -158,7 +158,7 @@ const FloatingShapesBackground = () => {
 
     // Ablak átméretezés kezelése
     const handleResize = () => {
-      shapes.forEach((shape) => {
+      shapesRef.current.forEach((shape) => {
         const rect = shape.getBoundingClientRect();
         // Ha az alakzat részben kilóg az ablakból, visszatesszük a képernyőre
         if (rect.right > window.innerWidth) {

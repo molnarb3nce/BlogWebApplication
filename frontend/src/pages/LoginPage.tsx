@@ -30,14 +30,14 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
       setError(err.message);
     }
   };
-
+/*
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     navigate("/");
   };
-
+*/
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       handleLogin(); // Az Enter lenyomásakor aktiválja a gombot

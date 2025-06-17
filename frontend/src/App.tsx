@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Grid, Box } from "@mui/material";
 import Navbar from "./components/Navbar";
@@ -57,28 +57,28 @@ const AppContent = () => {
             display: "flex",
             flexDirection: "column !important",
             alignItems: "stretch",
-            overflowX: "hidden", // Prevent horizontal scroll
-            overflowY: "hidden", // Let individual components handle vertical scroll
+            overflowX: "hidden",
+            overflowY: "hidden",
           }}
         >
           {/* Navbar */}
           <Grid 
-            item 
+            component="div"
             sx={{ 
               flexShrink: 0,
               width: "100%",
               maxWidth: "100%",
               overflowX: "hidden",
               display: "flex",
-              justifyContent: "center", // Center the navbar
+              justifyContent: "center",
             }}
           >
             <Box
               sx={{
                 width: "100%",
-                maxWidth: "min(1030px, calc(100vw - 16px))", // Match content max width
-                margin: "8px", // Térköz a navbar körül
-                padding: "8px", // Belső térköz
+                maxWidth: "min(1030px, calc(100vw - 16px))",
+                margin: "8px",
+                padding: "8px",
                 overflow: "hidden",
                 justifyContent: "center",
                 boxSizing: "border-box",
@@ -90,11 +90,10 @@ const AppContent = () => {
 
           {/* ScrollMode content */}
           <Grid 
-            item 
-            xs 
+            component="div"
             sx={{ 
-              flexGrow: 1, 
-              display: "flex", 
+              flexGrow: 1,
+              display: "flex",
               flexDirection: "column",
               width: "100%",
               maxWidth: "100%",
@@ -106,22 +105,22 @@ const AppContent = () => {
               sx={{
                 margin: "16px auto",
                 padding: "32px 16px",
-                backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
-                backdropFilter: "blur(5px)", // Homályosítás
-                borderRadius: "16px", // Lekerekített sarkok
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
-                overflowY: "auto", // Görgetés engedélyezése
-                overflowX: "hidden", // Prevent horizontal scroll
-                marginLeft: "16px", // Fixed left margin for consistent spacing
-                marginRight: "16px", // Fixed right margin for consistent spacing
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                backdropFilter: "blur(5px)",
+                borderRadius: "16px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                overflowY: "auto",
+                overflowX: "hidden",
+                marginLeft: "16px",
+                marginRight: "16px",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center", // Center content horizontally
-                justifyContent: "flex-start", // Align content to top
-                maxWidth: "min(1030px, calc(100vw - 32px))", // Responsive max width with margins
-                width: "calc(100% - 32px)", // Width accounting for margins
-                height: "calc(100% - 32px)", // Ensure proper height
-                boxSizing: "border-box", // Include padding in width calculation
+                alignItems: "center",
+                justifyContent: "flex-start",
+                maxWidth: "min(1030px, calc(100vw - 32px))",
+                width: "calc(100% - 32px)",
+                height: "calc(100% - 32px)",
+                boxSizing: "border-box",
               }}
             >
               <ScrollMode />
@@ -140,17 +139,17 @@ const AppContent = () => {
         direction="column"
         sx={{
           height: "100vh",
-          background: "transparent", // Kék gradiens háttér
+          background: "transparent",
         }}
       >
         {/* Első sor: Navbar */}
-        <Grid item>
+        <Grid component="div">
           <Box
             sx={{
-              margin: "8px", // Térköz a navbar körül
-              padding: "8px", // Belső térköz
-              overflow: "hidden", // Lekerekített sarkok hatása
-              justifyContent: "center", // Középre igazítás
+              margin: "8px",
+              padding: "8px",
+              overflow: "hidden",
+              justifyContent: "center",
             }}
           >
             <Navbar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
@@ -158,20 +157,20 @@ const AppContent = () => {
         </Grid>
 
         {/* Második sor: Route-ok által meghatározott tartalom */}
-        <Grid item xs>
+        <Grid component="div" sx={{ flexGrow: 1 }}>
           <Box
             sx={{
               margin: "16px auto",
               padding: "32px 16px",
-              backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
-              backdropFilter: "blur(5px)", // Homályosítás
-              borderRadius: "16px", // Lekerekített sarkok
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
-              overflowY: "auto", // Görgetés engedélyezése
-              marginLeft: "auto", // Középre igazítás
-              marginRight: "auto", // Középre igazítás
-              justifyContent: "center", // Középre igazítás
-              maxWidth: "min(1030px, calc(100vw - 32px))", // Teljes szélesség
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              backdropFilter: "blur(5px)",
+              borderRadius: "16px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              overflowY: "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
+              justifyContent: "center",
+              maxWidth: "min(1030px, calc(100vw - 32px))",
             }}
           >
             <Routes>

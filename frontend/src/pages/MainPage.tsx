@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Container, Grid } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";

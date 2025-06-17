@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";
 import { motion } from "framer-motion";
