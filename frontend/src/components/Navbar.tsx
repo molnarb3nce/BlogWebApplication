@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Button, Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import CreatePostDialog from "./CreatePostDialog";
@@ -29,12 +29,53 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
 
   return (
     <>
-      <AppBar position="sticky">
-        <Toolbar>
-          <Typography variant="h6" onClick={() => navigate("/")} style={{ cursor: "pointer", flexGrow: 1 }}>
+      <AppBar 
+        position="static"
+        elevation = {0}
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.3)", // 50% fehér opacitás
+          backdropFilter: "blur(10px)", // Homályosítás a modern hatás érdekében
+          borderRadius: "16px", // Lekerekített sarkok
+          margin: "8px", // Távolság a szélektől
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Enyhe árnyék
+        }}
+      >
+        <Toolbar
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between", // A Blog App és Menu gombok közötti távolság
+          }}
+        >
+          <Button
+            onClick={() => navigate("/")}
+            sx={{
+              color: "#1a2b6d", // Sötétkék szöveg
+              fontWeight: 600,
+              fontSize: "1.25rem", // Nagyobb szövegméret
+              textTransform: "none", // Ne legyen nagybetűs
+              transition: "transform 0.3s ease", // Hover animáció
+              "&:hover": {
+                transform: "scale(1.1)", // Hover állapotban nagyítás
+              },
+            }}
+          >
             Blog App
-          </Typography>
-          <Button color="inherit" onClick={handleMenuOpen}>
+          </Button>
+          <Button
+            color="inherit"
+            onClick={handleMenuOpen}
+            sx={{
+              color: "#1a2b6d", // Sötétkék szöveg
+              fontWeight: 600,
+              fontSize: "1.25rem", // Nagyobb szövegméret
+              textTransform: "none", // Ne legyen nagybetűs
+              transition: "transform 0.3s ease", // Hover animáció
+              "&:hover": {
+                transform: "scale(1.1)", // Hover állapotban nagyítás
+              },
+            }}
+          >
             Menu
           </Button>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
@@ -58,6 +99,7 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
         onClose={handleCreatePostClose}
         onPostCreated={handlePostCreated}
       />
+      <Toolbar />
     </>
   );
 };
