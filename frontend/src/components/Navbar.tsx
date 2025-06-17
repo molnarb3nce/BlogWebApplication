@@ -48,14 +48,19 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
           backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
           backdropFilter: "blur(10px)", // Homályosítás
           borderRadius: "16px", // Lekerekített sarkok
-          margin: "8px", // Távolság a szélektől
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
+          width: "100%", // Full width of parent container
+          maxWidth: "100%", // Don't exceed parent
+          margin: 0, // Remove margin - parent handles spacing
+          boxSizing: "border-box", // Include padding/border in width
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between", // A Blog App és Menu gombok közötti távolság
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           <Button

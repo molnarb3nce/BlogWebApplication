@@ -69,15 +69,18 @@ const AppContent = () => {
               width: "100%",
               maxWidth: "100%",
               overflowX: "hidden",
+              display: "flex",
+              justifyContent: "center", // Center the navbar
             }}
           >
             <Box
               sx={{
-                margin: "8px",
-                padding: "8px",
+                width: "100%",
+                maxWidth: "min(1030px, calc(100vw - 16px))", // Match content max width
+                padding: "0 8px", // Horizontal padding instead of margin
                 overflow: "hidden",
                 justifyContent: "center",
-                maxWidth: "calc(100% - 16px)", // Account for margins
+                boxSizing: "border-box",
               }}
             >
               <Navbar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
@@ -108,14 +111,14 @@ const AppContent = () => {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
                 overflowY: "auto", // Görgetés engedélyezése
                 overflowX: "hidden", // Prevent horizontal scroll
-                marginLeft: "auto", // Középre igazítás
-                marginRight: "auto", // Középre igazítás
+                marginLeft: "16px", // Fixed left margin for consistent spacing
+                marginRight: "16px", // Fixed right margin for consistent spacing
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center", // Center content horizontally
                 justifyContent: "flex-start", // Align content to top
-                maxWidth: "min(1030px, calc(100vw - 32px))", // Responsive max width
-                width: "100%",
+                maxWidth: "min(1030px, calc(100vw - 32px))", // Responsive max width with margins
+                width: "calc(100% - 32px)", // Width accounting for margins
                 height: "calc(100% - 32px)", // Ensure proper height
                 boxSizing: "border-box", // Include padding in width calculation
               }}
@@ -167,7 +170,7 @@ const AppContent = () => {
               marginLeft: "auto", // Középre igazítás
               marginRight: "auto", // Középre igazítás
               justifyContent: "center", // Középre igazítás
-              maxWidth: "1030px", // Teljes szélesség
+              maxWidth: "min(1030px, calc(100vw - 32px))", // Teljes szélesség
             }}
           >
             <Routes>
