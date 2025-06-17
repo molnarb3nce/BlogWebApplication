@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import ProfilePage from "./pages/ProfilePage";
 import ScrollMode from "./pages/ScrollMode";
+import FloatingShapesBackground from "./components/FloatingShapesBackground";
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
@@ -19,12 +21,13 @@ const App = () => {
 
   return (
     <Router>
+      <FloatingShapesBackground />
       <Grid
         container
         direction="column"
         sx={{
           height: "100vh",
-          background: "linear-gradient(135deg, #1a2b6d 0%, #4b9fe1 100%)", // Kék gradiens háttér
+          background: "transparent", // Kék gradiens háttér
         }}
       >
         {/* Első sor: Navbar */}
@@ -48,7 +51,7 @@ const App = () => {
               margin: "16px auto",
               padding: "32px 16px",
               backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
-              backdropFilter: "blur(10px)", // Homályosítás
+              backdropFilter: "blur(5px)", // Homályosítás
               borderRadius: "16px", // Lekerekített sarkok
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
               overflowY: "auto", // Görgetés engedélyezése
