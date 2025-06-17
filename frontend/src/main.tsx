@@ -19,8 +19,8 @@ const theme = createTheme({
       main: "#4b9fe1", // Világoskék
     },
     text: {
-      primary: "#ffffff", // Fehér szöveg
-      secondary: "#e6f2ff", // Halványkék szöveg
+      primary: "#1a2b6d", // Sötétkék szöveg
+      secondary: "#1a2b6d", // Halványkék szöveg
     },
   },
   components: {
