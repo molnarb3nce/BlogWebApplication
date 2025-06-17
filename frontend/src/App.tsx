@@ -77,7 +77,8 @@ const AppContent = () => {
               sx={{
                 width: "100%",
                 maxWidth: "min(1030px, calc(100vw - 16px))", // Match content max width
-                padding: "0 8px", // Horizontal padding instead of margin
+                margin: "8px", // Térköz a navbar körül
+                padding: "8px", // Belső térköz
                 overflow: "hidden",
                 justifyContent: "center",
                 boxSizing: "border-box",
