@@ -68,39 +68,67 @@ BlogWebApplication
 
 ## Installation and Setup
 
-### Prerequisites
+### Running with Docker
+
+The project includes a Docker configuration that makes it easy to run the entire application:
+
+1. Make sure you have [Docker](https://www.docker.com/products/docker-desktop/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+
+2. Open a terminal in the project's root directory and run:
+
+```bash
+   docker-compose up --build
+```
+
+3. The parts of the application will become available:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5000
+   - SQL Server: localhost:1433 (user: sa, password: YourPassword123)
+
+4. To stop the application, press `Ctrl+C` and then run:
+
+```bash
+   docker-compose down -v
+```
+
+### Manual installation
+
+#### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)  
-- [Node.js v18+](https://nodejs.org/)  
-- SQL Server or SQL Server Express  
+- [Node.js v18+](https://nodejs.org/)
+- SQL Server or SQL Server Express
 
 ---
 
-### Running the Backend
+#### Running the Backend
 
 1. Open a terminal and navigate to the backend project directory:
-   ```bash
+```bash
    cd backend/BlogApp/BlogApp.API
    dotnet run
+```
 
-The API will be available at https://localhost:5001 or http://localhost:5000 (check console output for the exact URL).
+The API will be available at https://localhost:5001 or http://localhost:5000 (check the console output for the exact URL).
 
 ---
 
-### Running the Frontend
+#### Running the Frontend
 
 1. Open a new terminal and navigate to the frontend directory:
-    ```bash
+```bash
     cd frontend
+```
 
 2. Install the required npm packages:
-
-   ```bash
+```bash
     npm install
+```
 
 3. Start the development server:
 
-   ```bash
+```bash
     npm run dev
+```
 
 The frontend application will be available at http://localhost:3000.
