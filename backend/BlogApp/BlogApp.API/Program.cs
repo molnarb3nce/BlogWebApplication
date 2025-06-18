@@ -105,6 +105,12 @@ namespace BlogApp.API
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<BlogContext>();
+                db.Database.Migrate(); // Ez automatikusan alkalmazza a migrációkat, ha vannak újak
+            }
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

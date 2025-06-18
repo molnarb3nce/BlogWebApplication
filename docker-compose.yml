@@ -9,7 +9,8 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=BlogAppDb;User=sa;Password=YourPassword123;
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=BlogAppDb;User Id=sa;Password=YourPassword123;MultipleActiveResultSets=true;TrustServerCertificate=True
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
     depends_on:
       - db
 
@@ -20,10 +21,10 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:5000/api
+      - REACT_APP_API_URL=http://backend:5000/api
 
   db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: blogapp_db
     ports:
       - "1433:1433"
