@@ -6,21 +6,22 @@ import React from "react";
 
 const queryClient = new QueryClient();
 
-// Egyedi MUI téma létrehozása
+// Creates a custom Material UI theme with a blue gradient background
+// and primary/secondary colors matching the gradient
 const theme = createTheme({
   palette: {
     background: {
       default: "linear-gradient(135deg, #1a2b6d 0%, #4b9fe1 100%)", // Kék gradiens háttér
     },
     primary: {
-      main: "#1a2b6d", // Sötétkék
+      main: "#1a2b6d",
     },
     secondary: {
-      main: "#4b9fe1", // Világoskék
+      main: "#4b9fe1",
     },
     text: {
-      primary: "#1a2b6d", // Sötétkék szöveg
-      secondary: "#1a2b6d", // Halványkék szöveg
+      primary: "#1a2b6d",
+      secondary: "#1a2b6d",
     },
   },
   components: {
@@ -38,6 +39,15 @@ const theme = createTheme({
   },
 });
 
+/**
+ * Application entry point that sets up the React root and global providers.
+ * Configures:
+ * - React Query for data fetching
+ * - Material UI theme with custom styling
+ * - CSS baseline reset
+ *
+ * Renders the main App component inside these providers.
+ */
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

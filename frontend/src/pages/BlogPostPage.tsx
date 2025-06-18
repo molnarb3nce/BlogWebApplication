@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Container, Typography, Box } from "@mui/material";
+import type { JSX } from "react";
 
+// Fetches a single blog post by ID from the API
 const fetchBlogPostById = async (id: string) => {
   const response = await fetch(`http://localhost:5000/api/blogpost/${id}`);
   if (!response.ok) {
@@ -10,7 +12,15 @@ const fetchBlogPostById = async (id: string) => {
   return response.json();
 };
 
-const BlogPostPage = () => {
+/**
+ * Displays a full blog post with title, author, date, and complete content.
+ * Fetches the blog post data based on the ID from the URL parameters.
+ * Uses React Query for data fetching and state management.
+ * 
+ * @component
+ * @returns {JSX.Element} Blog post page component
+ */
+const BlogPostPage = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const { data: post, isLoading, error } = useQuery({
     queryKey: ["blogPost", id],
@@ -20,22 +30,23 @@ const BlogPostPage = () => {
   if (isLoading) return <p>Loading post...</p>;
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
+  // Renders the blog post details
   return (
     <Container>
       <Box
         sx={{
-          backgroundColor: "#ffffff", // Fehér háttér
-          borderRadius: "16px", // Lekerekített sarkok
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
-          padding: "24px", // Belső térköz
-          marginTop: "16px", // Felső margó
+          backgroundColor: "#ffffff",
+          borderRadius: "16px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          padding: "24px",
+          marginTop: "16px",
         }}
       >
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            color: "#1a2b6d", // Sötétkék szöveg
+            color: "#1a2b6d",
             fontWeight: 600,
           }}
         >
@@ -45,7 +56,7 @@ const BlogPostPage = () => {
           variant="body2"
           gutterBottom
           sx={{
-            color: "#1a2b6d", // Sötétkék szöveg
+            color: "#1a2b6d",
             marginBottom: "16px",
           }}
         >
@@ -54,7 +65,7 @@ const BlogPostPage = () => {
         <Typography
           variant="body1"
           sx={{
-            color: "#1a2b6d", // Sötétkék szöveg
+            color: "#1a2b6d",
           }}
         >
           {post.content}

@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import { TextField, Button, Container, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean) => void }) => {
+/**
+ * Login page component that handles user authentication.
+ * Provides form for username and password input.
+ * Stores authentication token and username in local storage upon successful login.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Function} props.setIsAuthenticated - Callback function to update authentication state
+ * @returns {JSX.Element} Login page component
+ */
+const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean) => void }): JSX.Element => {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // Handles login form submission
+  // Sends a POST request to the login endpoint with username and password
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/account/login", {
@@ -21,6 +33,7 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
         throw new Error("Invalid username or password");
       }
 
+      // If login is successful, store the token and username in local storage
       const data = await response.json();
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", credentials.username);
@@ -30,20 +43,16 @@ const LoginPage = ({ setIsAuthenticated }: { setIsAuthenticated: (value: boolean
       setError(err.message);
     }
   };
-/*
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    navigate("/");
-  };
-*/
+
+  // Handles Enter key press to submit the form
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      handleLogin(); // Az Enter lenyomásakor aktiválja a gombot
+      handleLogin();
     }
   };
 
+  // Renders the login form with input fields and a submit button
+  // Displays error messages if login fails
   return (
     <Container maxWidth="sm" sx={{ mt: 8 }}>
       <Paper

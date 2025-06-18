@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type JSX } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Grid, Box } from "@mui/material";
 import Navbar from "./components/Navbar";
@@ -10,7 +10,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ScrollMode from "./pages/ScrollMode";
 import FloatingShapesBackground from "./components/FloatingShapesBackground";
 
-// Custom hook to track window width
+// A hook to track window width
 const useWindowWidth = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -27,7 +27,7 @@ const useWindowWidth = () => {
 };
 
 // Component that handles the conditional rendering logic
-const AppContent = () => {
+const AppContent = (): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
   const [shouldShowScrollMode, setShouldShowScrollMode] = useState(false);
   const windowWidth = useWindowWidth();
@@ -38,7 +38,7 @@ const AppContent = () => {
     localStorage.removeItem("token");
   };
 
-  // Check if we should show ScrollMode using useEffect
+  // Check if the scroll mode should be shown based on window width and current route
   useEffect(() => {
     setShouldShowScrollMode(windowWidth < 800 && location.pathname === '/');
   }, [windowWidth, location.pathname]);
@@ -61,7 +61,7 @@ const AppContent = () => {
             overflowY: "hidden",
           }}
         >
-          {/* Navbar */}
+          {/* First row: Navbar */}
           <Grid 
             component="div"
             sx={{ 
@@ -88,7 +88,7 @@ const AppContent = () => {
             </Box>
           </Grid>
 
-          {/* ScrollMode content */}
+          {/* Second row: ScrollMode content */}
           <Grid 
             component="div"
             sx={{ 
@@ -142,7 +142,7 @@ const AppContent = () => {
           background: "transparent",
         }}
       >
-        {/* Első sor: Navbar */}
+        {/* First row: Navbar */}
         <Grid component="div">
           <Box
             sx={{
@@ -156,7 +156,7 @@ const AppContent = () => {
           </Box>
         </Grid>
 
-        {/* Második sor: Route-ok által meghatározott tartalom */}
+        {/* Second row: Route-defined content */}
         <Grid component="div" sx={{ flexGrow: 1 }}>
           <Box
             sx={{
@@ -188,7 +188,15 @@ const AppContent = () => {
   );
 };
 
-const App = () => {
+/**
+ * Main application component that manages routing and layout.
+ * Handles authentication state and responsive layout switching between normal and scroll modes.
+ * Renders different layouts based on screen width and current route.
+ * 
+ * @component
+ * @returns {JSX.Element} The main application component with routing
+ */
+const App = (): JSX.Element => {
   return (
     <Router>
       <AppContent />

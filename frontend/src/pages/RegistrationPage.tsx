@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import { TextField, Button, Container, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const RegistrationPage = () => {
+/**
+ * Registration page component for new user signup.
+ * Collects user information including username, email, password, name, and age.
+ * Submits data to the API and redirects to login on success.
+ * 
+ * @component
+ * @returns {JSX.Element} Registration page component
+ */
+const RegistrationPage = (): JSX.Element => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -15,6 +23,8 @@ const RegistrationPage = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
+  // Handles registration form submission
+  // Sends a POST request to the registration endpoint with user data
   const handleRegister = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/account/register", {
@@ -30,25 +40,28 @@ const RegistrationPage = () => {
       }
 
       setSuccess(true);
-      setTimeout(() => navigate("/"), 2000); // Redirect to the main page after 2 seconds
+      setTimeout(() => navigate("/"), 2000); // Redirects to the main page after 2 seconds
     } catch (err: any) {
       setError(err.message);
     }
   };
 
+  // Handles Enter key press to submit the form
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      handleRegister(); // Az Enter lenyomásakor aktiválja a gombot
+      handleRegister();
     }
   };
 
+  // Renders the registration form with input fields and a submit button
+  // Displays error or success messages based on registration outcome
   return (
     <Container maxWidth="sm">
       <Paper
         elevation={3}
         sx={{
           p: 4,
-          backgroundColor: "#ffffff", // Fehér háttér
+          backgroundColor: "#ffffff",
           borderRadius: "16px",
           boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
           textAlign: "center",

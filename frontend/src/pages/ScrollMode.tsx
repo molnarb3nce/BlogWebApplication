@@ -1,15 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type JSX } from "react";
 import { Box } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";
 import { motion } from "framer-motion";
 
-const ScrollMode = () => {
+/**
+ * Alternative blog viewing mode for narrower screens.
+ * Shows one blog post at a time and allows scrolling through posts.
+ * Implements smooth animations during transitions between posts.
+ * Lazy-loads blog posts as needed based on scroll direction.
+ * 
+ * @component
+ * @returns {JSX.Element} Scroll mode component
+ */
+const ScrollMode = (): JSX.Element => {
   const [posts, setPosts] = useState<{ [key: number]: any }>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
   const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(null);
 
-  // Fetch the total number of posts
+  // Fetches the total number of posts
   useEffect(() => {
     const fetchTotalPosts = async () => {
       try {
@@ -25,9 +34,9 @@ const ScrollMode = () => {
     fetchTotalPosts();
   }, []);
 
-  // Fetch a specific post by order ID
+  // Fetches a specific post by order ID
   const fetchPost = async (orderId: number) => {
-    if (posts[orderId]) return; // Skip if the post is already cached
+    if (posts[orderId]) return;
 
     try {
       const response = await fetch(`http://localhost:5000/api/BlogPost/order/${orderId}`);
@@ -39,14 +48,14 @@ const ScrollMode = () => {
     }
   };
 
-  // Fetch the current, previous, and next posts
+  // Fetches the current, previous, and next posts
   useEffect(() => {
-    fetchPost(currentIndex); // Fetch the current post
-    if (currentIndex > 0) fetchPost(currentIndex - 1); // Fetch the previous post
-    if (currentIndex < totalPosts - 1) fetchPost(currentIndex + 1); // Fetch the next post
+    fetchPost(currentIndex);
+    if (currentIndex > 0) fetchPost(currentIndex - 1);
+    if (currentIndex < totalPosts - 1) fetchPost(currentIndex + 1);
   }, [currentIndex, totalPosts]);
 
-  // Handle scroll events
+  // Handles scroll events
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
       if (event.deltaY > 0 && currentIndex < totalPosts - 1) {
@@ -71,25 +80,26 @@ const ScrollMode = () => {
   return (
     <Box
       sx={{
-        height: "100%", // Use 100% instead of 100vh to respect parent
+        height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
         boxSizing: "border-box",
-        padding: "16px", // Add some padding for mobile
+        padding: "16px",
       }}
     >
+      {/* Animates the post container, ensures smooth transitions */}
       <motion.div
-        key={currentIndex} // Ensure animation triggers when index changes
-        initial={{ opacity: 0, y: scrollDirection === "down" ? 300 : -300 }} // Start position
-        animate={{ opacity: 1, y: 0 }} // End position
-        exit={{ opacity: 0, y: scrollDirection === "down" ? -300 : 300 }} // Exit position
-        transition={{ duration: 0.5 }} // Animation duration
-        style={{ 
+        key={currentIndex}
+        initial={{ opacity: 0, y: scrollDirection === "down" ? 300 : -300 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: scrollDirection === "down" ? -300 : 300 }}
+        transition={{ duration: 0.5 }}
+        style={{
           width: "100%",
-          maxWidth: "600px", // Limit max width for better readability
+          maxWidth: "600px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

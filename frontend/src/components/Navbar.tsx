@@ -1,33 +1,52 @@
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import { AppBar, Toolbar, Button, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import CreatePostDialog from "./CreatePostDialog";
 
-const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLogout: () => void }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Oldalsáv állapota
+/**
+ * Navigation bar component that provides access to main application features.
+ * Shows different options based on authentication state.
+ * Includes a sidebar menu for profile page view and create post functionality.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.isAuthenticated - Whether the user is authenticated
+ * @param {Function} props.onLogout - Callback function for logout action
+ * @returns {JSX.Element} Navigation bar component
+ */
+const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLogout: () => void }): JSX.Element => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // Toggles the sidebar open/close state
   const toggleSidebar = (open: boolean) => {
     setIsSidebarOpen(open);
   };
 
+  // Opens the create post dialog and closes the sidebar
   const handleCreatePostOpen = () => {
     setIsCreatePostOpen(true);
     toggleSidebar(false);
   };
 
+  // Closes the create post dialog
   const handleCreatePostClose = () => {
     setIsCreatePostOpen(false);
   };
 
+  // Callback function to handle post creation success
+  // Invalidates the blog posts query to refresh the list after a new post is created
   const handlePostCreated = () => {
     console.log("Post created successfully!");
     queryClient.invalidateQueries({ queryKey: ["blogPosts"] });
   };
 
+  // Menu options based on authentication state
+  // If authenticated, profile, create post, and logout options are available
+  // If not authenticated, login and register options are available
   const menuOptions = isAuthenticated
     ? [
         { label: "Profile", action: () => { navigate("/profile"); toggleSidebar(false); } },
@@ -45,19 +64,19 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
         position="static"
         elevation={0}
         sx={{
-          backgroundColor: "#ffffff", // Fehér háttér
-          borderRadius: "16px", // Lekerekített sarkok
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Árnyék
-          width: "100%", // Full width of parent container
-          maxWidth: "100%", // Don't exceed parent
-          margin: 0, // Remove margin - parent handles spacing
-          boxSizing: "border-box", // Include padding/border in width
+          backgroundColor: "#ffffff",
+          borderRadius: "16px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          maxWidth: "100%",
+          margin: 0,
+          boxSizing: "border-box",
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
-            justifyContent: "space-between", // A Blog App és Menu gombok közötti távolság
+            justifyContent: "space-between",
             width: "100%",
             boxSizing: "border-box",
           }}
@@ -65,28 +84,28 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
           <Button
             onClick={() => navigate("/")}
             sx={{
-              color: "#1a2b6d", // Sötétkék szöveg
+              color: "#1a2b6d",
               fontWeight: 600,
-              fontSize: "1.25rem", // Nagyobb szövegméret
-              textTransform: "none", // Ne legyen nagybetűs
-              transition: "transform 0.3s ease", // Hover animáció
+              fontSize: "1.25rem",
+              textTransform: "none",
+              transition: "transform 0.3s ease",
               "&:hover": {
-                transform: "scale(1.1)", // Hover állapotban nagyítás
+                transform: "scale(1.1)",
               },
             }}
           >
             Blog App
           </Button>
           <Button
-            onClick={() => toggleSidebar(true)} // Oldalsáv megnyitása
+            onClick={() => toggleSidebar(true)}
             sx={{
-              color: "#1a2b6d", // Sötétkék szöveg
+              color: "#1a2b6d",
               fontWeight: 600,
-              fontSize: "1.25rem", // Nagyobb szövegméret
-              textTransform: "none", // Ne legyen nagybetűs
-              transition: "transform 0.3s ease", // Hover animáció
+              fontSize: "1.25rem",
+              textTransform: "none",
+              transition: "transform 0.3s ease",
               "&:hover": {
-                transform: "scale(1.1)", // Hover állapotban nagyítás
+                transform: "scale(1.1)",
               },
             }}
           >
@@ -95,17 +114,17 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
         </Toolbar>
       </AppBar>
 
-      {/* Oldalsáv */}
+      {/* Sidebar */}
       <Drawer
         anchor="right"
         open={isSidebarOpen}
-        onClose={() => toggleSidebar(false)} // Oldalsáv bezárása
+        onClose={() => toggleSidebar(false)}
         sx={{
           "& .MuiDrawer-paper": {
-            backgroundColor: "rgba(255, 255, 255, 0.3)", // Átlátszó fehér háttér
-            backdropFilter: "blur(10px)", // Homályosítás
-            width: "250px", // Oldalsáv szélessége
-            padding: "16px", // Belső térköz
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            backdropFilter: "blur(10px)",
+            width: "250px",
+            padding: "16px",
           },
         }}
       >
@@ -115,13 +134,13 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
               <ListItemButton
                 onClick={option.action}
                 sx={{
-                  backgroundColor: "#ffffff", // Fehér háttér
+                  backgroundColor: "#ffffff",
                   fontWeight: 600,
-                  color: "#1a2b6d", // Sötétkék szöveg
-                  borderRadius: "8px", // Lekerekített sarkok
+                  color: "#1a2b6d",
+                  borderRadius: "8px",
                   marginBottom: "8px",
                   "&:hover": {
-                    backgroundColor: "#e0e0e0", // Halvány szürke háttér hover esetén
+                    backgroundColor: "#e0e0e0",
                   },
                 }}
               >
@@ -131,6 +150,7 @@ const Navbar = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLog
           ))}
         </List>
       </Drawer>
+      {/* Create Post Dialog */}
       <CreatePostDialog
         open={isCreatePostOpen}
         onClose={handleCreatePostClose}

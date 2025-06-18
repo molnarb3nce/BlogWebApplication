@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type JSX } from "react";
 import {
   Typography,
   TextField,
@@ -17,7 +17,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostDialog from "../components/PostDialog";
 
-const ProfilePage = () => {
+/**
+ * User profile page component that displays and manages user data and blog posts.
+ * Features:
+ * - Shows user personal information
+ * - Lists user's blog posts with edit and delete options
+ * - Provides account deletion functionality
+ * - Includes confirmation dialogs for destructive actions
+ * 
+ * @component
+ * @returns {JSX.Element} Profile page component
+ */
+const ProfilePage = (): JSX.Element => {
   const [userData, setUserData] = useState({
     firstName: "Unknown",
     lastName: "Unknown",
@@ -29,10 +40,11 @@ const ProfilePage = () => {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false); // Fiók törlés megerősítő ablak
-  const [isBlogConfirmDialogOpen, setIsBlogConfirmDialogOpen] = useState(false); // Blog törlés megerősítő ablak
-  const [blogToDelete, setBlogToDelete] = useState<string | null>(null); // Törlendő blog ID
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [isBlogConfirmDialogOpen, setIsBlogConfirmDialogOpen] = useState(false);
+  const [blogToDelete, setBlogToDelete] = useState<string | null>(null);
 
+  // Fetches user data and blogs on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -40,7 +52,7 @@ const ProfilePage = () => {
         if (!username) {
           throw new Error("Username is null or undefined.");
         }
-
+        // Fetches user data from the API based on the stored username
         const response = await fetch(`http://localhost:5000/api/account/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -54,13 +66,14 @@ const ProfilePage = () => {
       }
     };
 
+    // Fetches user's blog posts from the API
     const fetchUserBlogs = async () => {
       try {
         const username = localStorage.getItem("username");
         if (!username) {
           throw new Error("Username is null or undefined.");
         }
-
+        // Fetches blogs for the user based on the stored username
         const response = await fetch(`http://localhost:5000/api/blogpost/user/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -78,6 +91,8 @@ const ProfilePage = () => {
     fetchUserBlogs();
   }, []);
 
+  // Handles account deletion
+  // Sends a DELETE request to the API with the user's credentials
   const handleDeleteAccount = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/account/delete", {
@@ -101,7 +116,8 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle blog deletion
+  // Handles blog deletion
+  // Sends a DELETE request to the API to delete the specified blog post by ID
   const handleDeleteBlog = async (blogId: string) => {
     try {
       const response = await fetch(`http://localhost:5000/api/blogpost/${blogId}`, {
@@ -116,23 +132,26 @@ const ProfilePage = () => {
       }
 
       setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== blogToDelete));
-      setIsBlogConfirmDialogOpen(false); // Bezárjuk a megerősítő ablakot
-      setBlogToDelete(null); // Törlendő blog ID törlése
+      setIsBlogConfirmDialogOpen(false);
+      setBlogToDelete(null);
     } catch (error) {
       console.error(error);
     }
   };
 
+  // Handles blog editing
   const handleEditBlog = (blog: any) => {
     setSelectedBlog(blog);
     setIsPostDialogOpen(true);
   };
 
+  // Closes the post dialog and resets selected blog
   const handlePostDialogClose = () => {
     setIsPostDialogOpen(false);
     setSelectedBlog(null);
   };
 
+  // Handles post update after editing
   const handlePostUpdated = (updatedBlog: any) => {
     setBlogs((prevBlogs) =>
       prevBlogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
@@ -140,24 +159,29 @@ const ProfilePage = () => {
     handlePostDialogClose();
   };
 
+  // Opens the confirmation dialog for account deletion
   const handleConfirmDelete = () => {
-    setIsConfirmDialogOpen(true); // Fiók törlés megerősítő ablak megnyitása
+    setIsConfirmDialogOpen(true);
   };
 
+  // Closes the confirmation dialog for account deletion
   const handleCancelDelete = () => {
-    setIsConfirmDialogOpen(false); // Fiók törlés megerősítő ablak bezárása
+    setIsConfirmDialogOpen(false);
   };
 
+  // Opens the confirmation dialog for blog deletion
   const handleBlogConfirmDelete = (blogId: string) => {
-    setBlogToDelete(blogId); // Beállítjuk a törlendő blog ID-t
-    setIsBlogConfirmDialogOpen(true); // Blog törlés megerősítő ablak megnyitása
+    setBlogToDelete(blogId);
+    setIsBlogConfirmDialogOpen(true);
   };
 
+  // Closes the confirmation dialog for blog deletion
   const handleCancelBlogDelete = () => {
-    setIsBlogConfirmDialogOpen(false); // Blog törlés megerősítő ablak bezárása
-    setBlogToDelete(null); // Törlendő blog ID törlése
+    setIsBlogConfirmDialogOpen(false);
+    setBlogToDelete(null);
   };
 
+  // Renders the profile page with user data, blogs, and action buttons
   return (
     <>
       <Typography variant="h4" gutterBottom sx={{ color: "#1a2b6d", fontWeight: 600 }}>
@@ -243,14 +267,14 @@ const ProfilePage = () => {
         variant="contained"
         color="error"
         fullWidth
-        onClick={handleConfirmDelete} // Fiók törlés megerősítő ablak megnyitása
+        onClick={handleConfirmDelete}
         sx={{
-          backgroundColor: "#d32f2f", // Piros háttér
-          color: "#ffffff", // Fehér szöveg
+          backgroundColor: "#d32f2f",
+          color: "#ffffff",
           textTransform: "none",
           fontWeight: 600,
           "&:hover": {
-            backgroundColor: "#b71c1c", // Sötétebb piros hover állapotban
+            backgroundColor: "#b71c1c",
           },
         }}
       >
@@ -283,7 +307,7 @@ const ProfilePage = () => {
           dialogTitle="Edit Blog Post"
         />
       )}
-      {/* Megerősítő ablak */}
+      {/* Confirmation dialog for account deletion */}
       <Dialog open={isConfirmDialogOpen} onClose={handleCancelDelete}>
         <DialogTitle sx={{ color: "#1a2b6d" }}>Are you sure?</DialogTitle>
         <DialogContent>
@@ -301,7 +325,7 @@ const ProfilePage = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Blog törlés megerősítő ablak */}
+      {/* Confirmation dialog for blog deletion */}
       <Dialog open={isBlogConfirmDialogOpen} onClose={handleCancelBlogDelete}>
         <DialogTitle sx={{ color: "#1a2b6d" }}>Are you sure?</DialogTitle>
         <DialogContent>
