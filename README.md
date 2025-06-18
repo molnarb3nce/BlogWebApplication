@@ -109,7 +109,7 @@ The project includes a Docker configuration that makes it easy to run the entire
    dotnet run
 ```
 
-The API will be available at https://localhost:5001 or http://localhost:5000 (check the console output for the exact URL).
+The API will be available at http://localhost:5000
 
 ---
 
