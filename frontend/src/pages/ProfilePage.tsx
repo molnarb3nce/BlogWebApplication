@@ -4,7 +4,7 @@ import {
   TextField,
   Button,
   Divider,
-  Grid,
+  GridLegacy as Grid,
   Paper,
   IconButton,
   Dialog,

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Container, Grid } from "@mui/material";
+import { Container, GridLegacy as Grid } from "@mui/material";
 import BlogPostCard from "../components/BlogPostCard";
 
 const fetchBlogPosts = async () => {
