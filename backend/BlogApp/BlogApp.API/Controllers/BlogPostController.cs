@@ -15,6 +15,7 @@ namespace BlogApp.API.Controllers
         private readonly IBlogPostRepository _repository;
         private readonly UserManager<User> _userManager;
 
+        // Constructor to inject dependencies for the repository and user management
         public BlogPostController(IBlogPostRepository repository, UserManager<User> userManager)
         {
             _repository = repository;

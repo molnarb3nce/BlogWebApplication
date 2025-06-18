@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.API.Controllers
 {
+    // Controller for administrative tasks, such as resetting the database and managing users
+    // Provides endpoints to reset the database, get all users, modify a user, and delete a user
     [ApiController]
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
@@ -13,6 +15,7 @@ namespace BlogApp.API.Controllers
         private readonly BlogContext _context;
         private readonly UserManager<User> _userManager;
 
+        // Constructor to inject dependencies for database context and user management
         public AdminController(BlogContext context, UserManager<User> userManager)
         {
             _context = context;

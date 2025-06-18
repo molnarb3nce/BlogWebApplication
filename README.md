@@ -23,16 +23,15 @@ This application follows a three-tier architecture:
 - ASP.NET Core 8.0  
 - Entity Framework Core  
 - SQL Server  
-- AutoMapper  
+- ASP.NET Core Identity  
 - JWT token authentication  
 
 ### Frontend
 
 - React 18  
 - React Router  
-- Axios  
-- Bootstrap 5  
-- React Markdown  
+- Material UI  
+- Tanstack Query
 
 ---
 

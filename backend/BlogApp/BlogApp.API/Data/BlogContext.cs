@@ -8,6 +8,7 @@ namespace BlogApp.API.Data
     // It integrates ASP.NET Core Identity for user management
     public class BlogContext : IdentityDbContext<User>
     {
+        // Constructor to initialize the context with options
         public BlogContext(DbContextOptions<BlogContext> options) : base(options) { }
 
         public DbSet<BlogPost> BlogPosts { get; set; }

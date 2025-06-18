@@ -10,9 +10,8 @@ This React-based frontend serves as the user interface for the Blog Web Applicat
 
 - **React 18** – Modern JavaScript library for building user interfaces  
 - **React Router** – Client-side routing  
-- **Axios** – HTTP request handling  
-- **Bootstrap 5** – Responsive design  
-- **React Markdown** – Markdown formatting support in blog posts  
+- **Material UI** – Component library and style system
+- **Tanstack Query** – Data management and server status management  
 
 ---
 

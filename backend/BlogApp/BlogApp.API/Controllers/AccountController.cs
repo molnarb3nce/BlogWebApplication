@@ -18,6 +18,7 @@ namespace BlogApp.API.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
 
+        // Constructor to inject dependencies for user management and configuration
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -51,12 +52,14 @@ namespace BlogApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {
+            // Validate the user credentials
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 return Unauthorized("Invalid credentials.");
             }
 
+            // Sign in the user and generate a JWT token for authenticated access
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
             Console.WriteLine($"Debug: JWT Key = {BitConverter.ToString(key)}");
@@ -73,6 +76,7 @@ namespace BlogApp.API.Controllers
                 Audience = _configuration["Jwt:Audience"]
             };
 
+            // Create the token and return it in the response
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return Ok(new { Token = tokenHandler.WriteToken(token) });
         }
