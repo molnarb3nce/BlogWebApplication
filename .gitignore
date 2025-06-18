@@ -38,3 +38,6 @@ dist-ssr
 *.sln
 *.sw?
 frontend/vite.config.ts
+
+!package.json
+!package-lock.json
