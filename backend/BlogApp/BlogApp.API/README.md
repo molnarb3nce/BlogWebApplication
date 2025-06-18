@@ -55,15 +55,7 @@ BlogApp.API/
 
 ## Database configuration
 
-The project uses Entity Framework Core to communicate with the SQL Server database. The database connection can be configured in the `appsettings.json` file:
-
-```json
-{
-  “ConnectionStrings”: {
-    “DefaultConnection”: “Server=db;Database=BlogDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True”
-  }
-}
-```
+The project uses Entity Framework Core to communicate with the SQL Server database. The database connection can be configured in the `appsettings.json` file.
 
 ## Authentication and Authorization
 
