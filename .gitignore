@@ -37,10 +37,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-frontend/vite.config.ts
 
+!frontend/vite.config.ts
+!frontend/tsconfig.json
+!frontend/tsconfig.app.json
+!frontend/tsconfig.node.json
 !package.json
 !package-lock.json
+
 /backend/BlogApp/BlogApp.API.Tests/.vs
 /backend/BlogApp/BlogApp.API.Tests/BlogApp.API.Tests/obj
 /backend/BlogApp/BlogApp.API.Tests/BlogApp.API.Tests/bin
