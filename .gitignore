@@ -41,3 +41,6 @@ frontend/vite.config.ts
 
 !package.json
 !package-lock.json
+/backend/BlogApp/BlogApp.API.Tests/.vs
+/backend/BlogApp/BlogApp.API.Tests/BlogApp.API.Tests/obj
+/backend/BlogApp/BlogApp.API.Tests/BlogApp.API.Tests/bin

@@ -38,21 +38,21 @@ This application follows a three-tier architecture:
 ## Project Structure
 
 BlogWebApplication
-
-├── backend/\
-│ └── BlogApp/\
-│ ├── BlogApp.API/ # ASP.NET Core Web API project\
-│ ├── BlogApp.Core/ # Business logic and entities\
-│ └── BlogApp.Tests/ # Unit tests\
-├── frontend/ # React frontend application\
-│ ├── public/ # Static files\
-│ ├── src/ # Source code\
-│ │ ├── components/ # Reusable components\
-│ │ ├── pages/ # Page components\
-│ │ ├── services/ # API services\
-│ │ └── App.js # Main application component\
+```
+├── backend/
+│ └── BlogApp/
+│ ├── BlogApp.API/ # ASP.NET Core Web API project
+│ ├── BlogApp.Core/ # Business logic and entities
+│ └── BlogApp.Tests/ # Unit tests
+├── frontend/ # React frontend application
+│ ├── public/ # Static files
+│ ├── src/ # Source code
+│ │ ├── components/ # Reusable components
+│ │ ├── pages/ # Page components
+│ │ ├── services/ # API services
+│ │ └── App.js # Main application component
 └── docker-compose.yml # Docker configuration (under development)
-
+```
 ---
 
 ## Features
@@ -131,3 +131,41 @@ The API will be available at http://localhost:5000
 ```
 
 The frontend application will be available at http://localhost:3000.
+
+## Unit Tests
+
+The project includes comprehensive unit tests for the BlogPost repository operations:
+
+-   **Create**: Tests adding new blog posts
+-   **GetById**: Tests retrieving posts by ID (existing and non-existing)
+-   **GetAll**: Tests retrieving all posts with various scenarios
+-   **Update**: Tests post updating functionality
+-   **Delete**: Tests post deletion functionality
+
+## Running Tests
+
+### Using Visual Studio:
+
+1.  Open the solution in Visual Studio
+2.  Open Test Explorer: `Test > Test Explorer`
+3.  Click `Run All Tests` button
+
+### Using Command Line:
+
+1. Navigate to the test project directory
+
+```bash
+   cd backend/BlogApp/BlogApp.API.Tests
+```
+
+2. Run all tests
+
+```bash
+   dotnet test
+```
+
+3. Run a specific test
+
+```bash
+   dotnet test --filter "FullyQualifiedName=BlogApp.Tests.BlogPostRepositoryTests.Create_AddsNewBlogPost_ToRepository"
+```
