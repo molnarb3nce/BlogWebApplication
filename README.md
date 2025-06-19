@@ -90,47 +90,39 @@ The project includes a Docker configuration that makes it easy to run the entire
    docker-compose down -v
 ```
 
-### Manual installation
+## Using the Application
 
-#### Prerequisites
+After successfully running the application, you can:
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)  
-- [Node.js v18+](https://nodejs.org/)
-- SQL Server or SQL Server Express
+1. **Browse the Blog**: The homepage displays all blog posts with a clean card-based interface.
 
----
+2. **Sample Content**: The application automatically initializes the database with 5 sample blog posts assigned to the admin user, so you can immediately see content without creating any.
 
-#### Running the Backend
+3. **User Registration and Login**: 
+   - Click on "Register" to create a new account
+     - Required fields:
+       - Username: Choose a unique username (3-20 characters)
+       - Email: Provide a valid email format (e.g., user@example.com)
+       - First Name: Your first name (2-50 characters)
+       - Last Name: Your last name (2-50 characters)
+       - Age: Enter your age
+       - Password: Create a strong password (minimum 6 characters, must include at least one uppercase letter, one lowercase letter, one number, and one special character)
+   - Click on "Login" to access your existing account
 
-1. Open a terminal and navigate to the backend project directory:
-```bash
-   cd backend/BlogApp/BlogApp.API
-   dotnet run
-```
 
-The API will be available at http://localhost:5000
+4. **Creating Posts**: Once logged in, you can create new blog posts using the "Create Post" button.
 
----
+5. **Managing Posts**: As the author of a post, you can edit or delete your own posts.
 
-#### Running the Frontend
+## Database Initialization
 
-1. Open a new terminal and navigate to the frontend directory:
-```bash
-    cd frontend
-```
+The application uses a database initializer that automatically creates sample blog posts when you first run the application. This helps you to:
 
-2. Install the required npm packages:
-```bash
-    npm install
-```
+- Immediately see how the application looks with content
+- Test the blog browsing functionality without creating posts manually
+- Understand the post structure and formatting
 
-3. Start the development server:
-
-```bash
-    npm run dev
-```
-
-The frontend application will be available at http://localhost:3000.
+The sample posts are created only if no posts exist in the database, so your content won't be overwritten after the first run.
 
 ## Unit Tests
 
@@ -162,10 +154,4 @@ The project includes comprehensive unit tests for the BlogPost repository operat
 
 ```bash
    dotnet test
-```
-
-3. Run a specific test
-
-```bash
-   dotnet test --filter "FullyQualifiedName=BlogApp.Tests.BlogPostRepositoryTests.Create_AddsNewBlogPost_ToRepository"
 ```

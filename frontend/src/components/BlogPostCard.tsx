@@ -29,19 +29,24 @@ const BlogPostCard = ({ post }: { post: any }): JSX.Element => {
         borderRadius: "16px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        display: "flex",
+        flexDirection: "column",
         "&:hover": {
           transform: "scale(1.05)",
           boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
         },
       }}
     >
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography
           variant="h6"
           sx={{
             color: "#1a2b6d",
             fontWeight: 600,
             marginBottom: "4px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {post.title}
@@ -73,7 +78,7 @@ const BlogPostCard = ({ post }: { post: any }): JSX.Element => {
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ justifyContent: "flex-end", marginTop: "19px" }}>
+      <CardActions sx={{ justifyContent: "flex-end", marginTop: "auto", padding: "8px 16px 16px" }}>
         <Button
           size="small"
           onClick={() => navigate(`/blogpost/${post.id}`)}

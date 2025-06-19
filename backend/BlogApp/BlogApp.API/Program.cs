@@ -105,10 +105,14 @@ namespace BlogApp.API
 
             var app = builder.Build();
 
+            // Configure the database context and apply migrations
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<BlogContext>();
-                db.Database.Migrate(); // Ez automatikusan alkalmazza a migrációkat, ha vannak újak
+                db.Database.Migrate();
+
+                // Initialize the database with test data
+                DbInitializer.InitializeAsync(scope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             // Configure the HTTP request pipeline.
