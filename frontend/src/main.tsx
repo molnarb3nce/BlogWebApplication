@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 const theme = createTheme({
   palette: {
     background: {
-      default: "linear-gradient(135deg, #1a2b6d 0%, #4b9fe1 100%)", // Kék gradiens háttér
+      default: "linear-gradient(135deg, #1a2b6d 0%, #4b9fe1 100%)",
     },
     primary: {
       main: "#1a2b6d",
