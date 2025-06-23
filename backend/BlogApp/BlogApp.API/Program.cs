@@ -125,8 +125,8 @@ namespace BlogApp.API
             // Enable CORS
             app.UseCors("AllowFrontend");
 
-            //app.UsehttpRedirection();
-            app.UseAuthentication(); // Add authentication middleware
+            // Add authentication middleware
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
